@@ -7,5 +7,6 @@ https://developer.garmin.com/fit/protocol/
 
 ToDo
 - Header parser
-    - convert header parameters from bytes to correct data types
+    - Parse CRC
+    - ~~convert header parameters from bytes to correct data types~~
     - ~~chunk out header byte array~~
