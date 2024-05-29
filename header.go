@@ -55,7 +55,7 @@ func headerParts(h []byte) (size, proto, prof, dsize, dtype, crc []byte, err err
 	dsize = h[4:8]
 	dtype = h[8:12]
 	if len(h) == 14 {
-		crc = h[12:13]
+		crc = h[12:14]
 	}
 	return
 }
