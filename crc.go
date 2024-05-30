@@ -1,6 +1,9 @@
 package fitprotocol
 
-import "errors"
+import (
+	"encoding/binary"
+	"errors"
+)
 
 var CRC_BUFFER_BOUNDS_ERROR = errors.New("Attempted to read outside of buffer.")
 
@@ -24,6 +27,10 @@ func CalculateCRC(buffer []byte, start, end int) (CRC, error) {
 
 func (s *CRC) CRC() uint16 {
 	return s.crc
+}
+
+func (s *CRC) Matches(want_crc []byte) bool {
+	return s.crc == binary.LittleEndian.Uint16(want_crc)
 }
 
 func (s *CRC) updateCRC(b byte) {
