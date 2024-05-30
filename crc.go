@@ -19,6 +19,10 @@ type CRC struct {
 	bytes_seen int
 }
 
+func CrcToUint16(crc_bytes []byte) uint16 {
+	return binary.LittleEndian.Uint16(crc_bytes)
+}
+
 func CalculateCRC(buffer []byte, start, end int) (CRC, error) {
 	var crc CRC
 	err := crc.AddBytes(buffer, start, end)
@@ -30,7 +34,18 @@ func (s *CRC) CRC() uint16 {
 }
 
 func (s *CRC) Matches(want_crc []byte) bool {
-	return s.crc == binary.LittleEndian.Uint16(want_crc)
+	return s.crc == CrcToUint16(want_crc)
+}
+
+func (s *CRC) AddBytes(buff []byte, start, end int) error {
+	if start < 0 || end >= len(buff) {
+		return CRC_BUFFER_BOUNDS_ERROR
+	}
+	for i := start; i <= end; i++ {
+		s.updateCRC(buff[i])
+		s.bytes_seen++
+	}
+	return nil
 }
 
 func (s *CRC) updateCRC(b byte) {
@@ -45,15 +60,4 @@ func (s *CRC) updateCRC(b byte) {
 	tmp = CRC_TABLE[s.crc&0xF]
 	s.crc = (s.crc >> 4) & 0x0FFF
 	s.crc = s.crc ^ tmp ^ CRC_TABLE[(b>>4)&0xF]
-}
-
-func (s *CRC) AddBytes(buff []byte, start, end int) error {
-	if start < 0 || end >= len(buff) {
-		return CRC_BUFFER_BOUNDS_ERROR
-	}
-	for i := start; i <= end; i++ {
-		s.updateCRC(buff[i])
-		s.bytes_seen++
-	}
-	return nil
 }
