@@ -6,6 +6,12 @@ https://developer.garmin.com/fit/overview/
 https://developer.garmin.com/fit/protocol/
 
 ToDo
+- Better error handling
+    - You still have println(err)'s in here dummy
+- Unit tests
+    - CRC
+    - Header
+    - Data
 - Header parser
     - Header auto detection? (find size function?)
     - ~~convert header parameters from bytes to correct data types~~
