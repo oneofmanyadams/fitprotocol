@@ -7,6 +7,7 @@ import (
 
 const (
 	FIT_FILE_TYPE = ".FIT"
+	DATA_CRC_SIZE = 2
 )
 
 var INVALID_HEADER_LEN = errors.New("Provided header not correct byte length.")
@@ -15,7 +16,6 @@ var INVALID_HEADER_TYPE = errors.New("Provided header not .fit type.")
 type Header struct {
 	HeaderSize      int
 	DataSize        uint32
-	TotalSize       int
 	DataType        string
 	ProtocolVersion int
 	ProfileVersion  uint16
@@ -30,7 +30,6 @@ func DecodeHeader(b []byte) (Header, error) {
 	}
 	h.HeaderSize = int(size[0])
 	h.DataSize = binary.LittleEndian.Uint32(dsize)
-	h.TotalSize = h.HeaderSize + int(h.DataSize)
 	h.ProtocolVersion = int(proto[0])
 	// ProfileVersion in the SDK does some math as such:
 	// if >2199 /1000 else /100
