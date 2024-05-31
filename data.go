@@ -23,8 +23,6 @@ func NewData(reader *bufio.Reader, header_size, data_size int) Data {
 		Reader:     reader,
 		HeaderSize: header_size,
 		DataSize:   data_size,
-		ReadLines:  0,
-		Position:   0,
 		ReadLimit:  data_size}
 }
 
