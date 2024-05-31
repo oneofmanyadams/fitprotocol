@@ -7,7 +7,6 @@ import (
 
 const (
 	FIT_FILE_TYPE = ".FIT"
-	DATA_CRC_SIZE = 2
 )
 
 var INVALID_HEADER_LEN = errors.New("Provided header not correct byte length.")
