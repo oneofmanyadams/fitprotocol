@@ -2,12 +2,14 @@ package fitprotocol
 
 import (
 	"bufio"
-	"fmt"
+	"errors"
 )
 
 const (
 	DATA_CRC_SIZE = 2
 )
+
+var BYTE_READ_ERROR = errors.New("Error attempting to read from byte buffer.")
 
 type Data struct {
 	Reader     *bufio.Reader
@@ -26,20 +28,24 @@ func NewData(reader *bufio.Reader, header_size, data_size int) Data {
 		ReadLimit:  data_size}
 }
 
-func (s *Data) Read() byte {
+func (s *Data) Read() (byte, error) {
 	b, err := s.Reader.ReadByte()
 	if err != nil {
-		fmt.Println(err)
+		return 0x0, nil
 	}
 	s.ReadLines++
 	s.Position++
-	return b
+	return b, nil
 }
 
-func (s *Data) ReadRemaining() []byte {
+func (s *Data) ReadRemaining() ([]byte, error) {
 	var bytes []byte
 	for s.ReadLines < s.DataSize+DATA_CRC_SIZE {
-		bytes = append(bytes, s.Read())
+		b, err := s.Read()
+		if err != nil {
+			return bytes, err
+		}
+		bytes = append(bytes, b)
 	}
-	return bytes
+	return bytes, nil
 }
