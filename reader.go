@@ -1,6 +1,9 @@
 package fitprotocol
 
-import "bufio"
+import (
+	"bufio"
+	"io"
+)
 
 const (
 	HEADER_CRC_SIZE        = 2
@@ -13,11 +16,12 @@ const (
 )
 
 type FitReader struct {
-	Reader *bufio.Reader
+	Reader *io.Reader
+	Buffer *bufio.Reader
 }
 
-func NewFitReader(reader *bufio.Reader) (FitReader, error) {
-	return FitReader{Reader: reader}, nil
+func NewFitReader(reader *io.Reader) (FitReader, error) {
+	return FitReader{Reader: reader, Buffer: bufio.NewReader(*reader)}, nil
 }
 
 func (s *FitReader) HeaderSize() int {
