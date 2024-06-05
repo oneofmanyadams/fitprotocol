@@ -33,18 +33,19 @@ func (s *FitReader) HeaderSize() (int, error) {
 	return int(header_size[0]), nil
 }
 
-func (s *FitReader) DataSize() int {
-	return 0
+func (s *FitReader) HeaderBytes() ([]byte, error) {
+	header_size, read_err := s.HeaderSize()
+	if read_err != nil {
+		return []byte{}, read_err
+	}
+	return s.ReadBytes(0, header_size)
 }
 
-func (s *FitReader) HeaderCRCvalid() bool {
-	return false
+func (s *FitReader) ReadBytes(offset, length int) ([]byte, error) {
+	b := make([]byte, length)
+	_, read_err := s.File.ReadAt(b, int64(offset))
+	if read_err != nil {
+		return []byte{}, read_err
+	}
+	return b, nil
 }
-
-func (s *FitReader) DataCRCvalid() bool {
-	return false
-}
-
-// Next Message func?
-
-// Next Byte func
