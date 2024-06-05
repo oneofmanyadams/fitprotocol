@@ -2,7 +2,7 @@ package fitprotocol
 
 import (
 	"bufio"
-	"io"
+	"os"
 )
 
 const (
@@ -16,22 +16,21 @@ const (
 )
 
 type FitReader struct {
-	Reader io.Reader
+	File   *os.File
 	Buffer *bufio.Reader
 }
 
-func NewFitReader(reader io.Reader) (FitReader, error) {
-	return FitReader{Reader: reader, Buffer: bufio.NewReader(reader)}, nil
+func NewFitReader(file *os.File) (FitReader, error) {
+	return FitReader{File: file, Buffer: bufio.NewReader(file)}, nil
 }
 
 func (s *FitReader) HeaderSize() (int, error) {
-	// Should we just always grab the first byte of the file?
-	// And basically ignore the buffer or reader current location?
-	first_byte, peek_error := s.Buffer.Peek(1)
-	if peek_error != nil {
-		return 0, peek_error
+	header_size := make([]byte, 1)
+	_, read_err := s.File.ReadAt(header_size, 0)
+	if read_err != nil {
+		return 0, read_err
 	}
-	return int(first_byte[0]), nil
+	return int(header_size[0]), nil
 }
 
 func (s *FitReader) DataSize() int {
