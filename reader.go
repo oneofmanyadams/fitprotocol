@@ -25,8 +25,7 @@ func NewFitReader(file *os.File) (FitReader, error) {
 }
 
 func (s *FitReader) HeaderSize() (int, error) {
-	header_size := make([]byte, 1)
-	_, read_err := s.File.ReadAt(header_size, 0)
+	header_size, read_err := s.ReadBytes(0, 1)
 	if read_err != nil {
 		return 0, read_err
 	}
