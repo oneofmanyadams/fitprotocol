@@ -48,3 +48,42 @@ func (s *FitReader) ReadBytes(offset, length int) ([]byte, error) {
 	}
 	return b, nil
 }
+
+// CRC consolidated checker
+func (s *FitReader) CRCs() (bool, bool, error) {
+	var header_matches bool
+	var data_matches bool
+	// Decode header
+	header_bytes, err := s.HeaderBytes()
+	if err != nil {
+		return header_matches, data_matches, err
+	}
+	header, err := DecodeHeader(header_bytes)
+	if err != nil {
+		return header_matches, data_matches, err
+	}
+	// Check Header CRC
+	header_crc, err := CalculateCRC(header.HeaderBytes, 0, 11)
+	if err != nil {
+		return header_matches, data_matches, err
+	}
+	header_matches = header_crc.Matches(header.CRC)
+
+	// Calaculate data CRC
+	data_bytes, err := s.ReadBytes(header.HeaderSize, int(header.DataSize))
+	if err != nil {
+		return header_matches, data_matches, err
+	}
+	data_crc, err := CalculateCRC(data_bytes, 0, int(header.DataSize)-1)
+	if err != nil {
+		return header_matches, data_matches, err
+	}
+	// Get provided Data CRC from end of file
+	data_crc_bytes, err := s.ReadBytes(header.TotalSize(), DATA_CRC_SIZE)
+	if err != nil {
+		return header_matches, data_matches, err
+	}
+	// compare data crcs.
+	data_matches = data_crc.Matches(data_crc_bytes)
+	return header_matches, data_matches, nil
+}

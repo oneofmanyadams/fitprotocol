@@ -16,8 +16,10 @@ ToDo
     - CRC
     - Header
     - Data
-- Parse CRC
-    - Better standardize how CRCs are pulled out and compared?
+- ~~Parse CRC~~
+    - ~~Better standardize how CRCs are pulled out and compared?~~
+        - ~~Standardize how header/data bytes are pulled out.~~
+        - ~~Standardize how offsets are set.~~
     - ~~Find EOF CRC and also compare that?~~
     - ~~More structual CRC logic.~~
     - ~~Logic to easily compare Header/EOF CRC value to CRC func output?~~
