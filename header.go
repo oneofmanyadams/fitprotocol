@@ -18,12 +18,13 @@ type Header struct {
 	DataType        string
 	ProtocolVersion int
 	ProfileVersion  uint16
+	HeaderBytes     []byte
 	CRC             []byte
 }
 
 func DecodeHeader(b []byte) (Header, error) {
 	var h Header
-	size, proto, prof, dsize, dtype, crc, err := headerParts(b)
+	size, proto, prof, dsize, dtype, hbytes, crc, err := headerParts(b)
 	if err != nil {
 		return Header{}, err
 	}
@@ -38,6 +39,7 @@ func DecodeHeader(b []byte) (Header, error) {
 	if h.DataType != FIT_FILE_TYPE {
 		return Header{}, INVALID_HEADER_TYPE
 	}
+	h.HeaderBytes = hbytes
 	h.CRC = crc
 	return h, nil
 }
@@ -46,7 +48,7 @@ func (s *Header) TotalSize() int {
 	return s.HeaderSize + int(s.DataSize)
 }
 
-func headerParts(h []byte) (size, proto, prof, dsize, dtype, crc []byte, err error) {
+func headerParts(h []byte) (size, proto, prof, dsize, dtype, hbytes, crc []byte, err error) {
 	if len(h) != 12 && len(h) != 14 {
 		err = INVALID_HEADER_LEN
 		return
@@ -56,6 +58,7 @@ func headerParts(h []byte) (size, proto, prof, dsize, dtype, crc []byte, err err
 	prof = h[2:4]
 	dsize = h[4:8]
 	dtype = h[8:12]
+	hbytes = h[0:12]
 	if len(h) == 14 {
 		crc = h[12:14]
 	}
