@@ -42,6 +42,10 @@ func DecodeHeader(b []byte) (Header, error) {
 	return h, nil
 }
 
+func (s *Header) TotalSize() int {
+	return s.HeaderSize + int(s.DataSize)
+}
+
 func headerParts(h []byte) (size, proto, prof, dsize, dtype, crc []byte, err error) {
 	if len(h) != 12 && len(h) != 14 {
 		err = INVALID_HEADER_LEN
