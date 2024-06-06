@@ -6,6 +6,9 @@ https://developer.garmin.com/fit/overview/
 https://developer.garmin.com/fit/protocol/
 
 ToDo
+- Definition message parser
+    - Identify Messages
+    - Read message details
 - Clean up how header and data reads interact.
     - Read bytes out through separate logic.
     - ~~Can the header read be defined internally~~
