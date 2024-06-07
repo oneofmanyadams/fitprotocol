@@ -14,6 +14,14 @@ const (
 	DATA_MESSAGE = "data_message"
 )
 
+type MessageHeader struct {
+	IsTimestamp  bool
+	IsHeader     bool
+	IsData       bool
+	MsgTypeSpec  bool
+	LocalMsgType int16
+}
+
 func MessageType(msg_header_byte byte) string {
 	switch {
 	case msg_header_byte&TIME_MSG_MASK == TIME_MSG_MASK:
