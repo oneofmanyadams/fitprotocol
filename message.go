@@ -16,10 +16,22 @@ const (
 
 type MessageHeader struct {
 	IsTimestamp  bool
-	IsHeader     bool
+	IsDef        bool
 	IsData       bool
 	MsgTypeSpec  bool
-	LocalMsgType int16
+	LocalMsgType uint8
+	TimeOffset   uint32
+}
+
+func ParseMessageHeader(header_byte byte) MessageHeader {
+	var mh MessageHeader
+	mh.IsTimestamp = header_byte&TIME_MSG_MASK == TIME_MSG_MASK
+	mh.IsDef = header_byte&DEF_MSG_MASK == DEF_MSG_MASK
+	if mh.IsDef == false {
+		mh.IsData = header_byte&DATA_MSG_MASK == DATA_MSG_MASK
+	}
+	mh.LocalMsgType = header_byte &^ 0xF0
+	return mh
 }
 
 func MessageType(msg_header_byte byte) string {
