@@ -4,9 +4,10 @@ const (
 	TIME_MSG_MASK       = 0x80
 	DEF_MSG_MASK        = 0x40
 	DATA_MSG_MASK       = 0x00
+	DEV_DATA_MASK       = 0x20
 	LOCAL_MSG_MASK      = 0xF0 // 0x0F
 	TIME_LOCAL_MSG_MASK = 0x9F
-	DEV_DATA_MASK       = 0x20
+	TIME_OFFSET_MASK    = 0xE0
 )
 
 type MessageHeader struct {
@@ -17,14 +18,15 @@ type MessageHeader struct {
 	DevFlag      bool
 	MsgTypeSpec  bool
 	LocalMsgType uint8
-	TimeOffset   uint32
+	TimeOffset   uint8
 }
 
 func ParseMessageHeader(header_byte byte) MessageHeader {
 	var mh MessageHeader
 	mh.Byte = header_byte
 	SetMessageHeaderType(&mh)
-	SetLocalMessageType(&mh)
+	SetMessageLocalType(&mh)
+	SetMessageTimeOffset(&mh)
 	return mh
 }
 
@@ -39,7 +41,15 @@ func SetMessageHeaderType(header *MessageHeader) {
 	}
 }
 
-func SetLocalMessageType(header *MessageHeader) {
+func SetMessageDev(header *MessageHeader) {
+	// still working on this
+	if (header.IsDef || header.IsData) &&
+		header.Byte&DEV_DATA_MASK == DEV_DATA_MASK {
+		header.DevFlag = true
+	}
+}
+
+func SetMessageLocalType(header *MessageHeader) {
 	switch {
 	case header.IsTimestamp:
 		header.LocalMsgType = header.Byte &^ TIME_LOCAL_MSG_MASK
@@ -47,5 +57,11 @@ func SetLocalMessageType(header *MessageHeader) {
 		header.LocalMsgType = header.Byte &^ LOCAL_MSG_MASK
 	case header.IsData:
 		header.LocalMsgType = header.Byte &^ LOCAL_MSG_MASK
+	}
+}
+
+func SetMessageTimeOffset(header *MessageHeader) {
+	if header.IsTimestamp {
+		header.TimeOffset = header.Byte &^ TIME_OFFSET_MASK
 	}
 }
