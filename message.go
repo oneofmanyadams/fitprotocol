@@ -1,22 +1,16 @@
 package fitprotocol
 
 const (
-	TIME_MSG_MASK      = 0x80
-	DEF_MSG_MASK       = 0x40
-	DATA_MSG_MASK      = 0x00
-	LOCAL_MSG_NUM_MASK = 0x0F
-	DEV_DATA_MASK      = 0x20
-)
-
-const (
-	NOT_A_MESSAGE = 0
-	TIME_MESSAGE  = 1
-	DEF_MESSAGE   = 2
-	DATA_MESSAGE  = 3
+	TIME_MSG_MASK       = 0x80
+	DEF_MSG_MASK        = 0x40
+	DATA_MSG_MASK       = 0x00
+	LOCAL_MSG_MASK      = 0xF0 // 0x0F
+	TIME_LOCAL_MSG_MASK = 0x9F
+	DEV_DATA_MASK       = 0x20
 )
 
 type MessageHeader struct {
-	HeaderByte   uint8
+	Byte         uint8
 	IsTimestamp  bool
 	IsDef        bool
 	IsData       bool
@@ -28,19 +22,30 @@ type MessageHeader struct {
 
 func ParseMessageHeader(header_byte byte) MessageHeader {
 	var mh MessageHeader
-	mh.HeaderByte = header_byte
-	MessageType(&mh)
-	mh.LocalMsgType = header_byte &^ 0xF0
+	mh.Byte = header_byte
+	SetMessageHeaderType(&mh)
+	SetLocalMessageType(&mh)
 	return mh
 }
 
-func MessageType(header *MessageHeader) {
+func SetMessageHeaderType(header *MessageHeader) {
 	switch {
-	case header.HeaderByte&TIME_MSG_MASK == TIME_MSG_MASK:
+	case header.Byte&TIME_MSG_MASK == TIME_MSG_MASK:
 		header.IsTimestamp = true
-	case header.HeaderByte&DEF_MSG_MASK == DEF_MSG_MASK:
+	case header.Byte&DEF_MSG_MASK == DEF_MSG_MASK:
 		header.IsDef = true
-	case header.HeaderByte&DATA_MSG_MASK == DATA_MSG_MASK:
+	case header.Byte&DATA_MSG_MASK == DATA_MSG_MASK:
 		header.IsData = true
+	}
+}
+
+func SetLocalMessageType(header *MessageHeader) {
+	switch {
+	case header.IsTimestamp:
+		header.LocalMsgType = header.Byte &^ TIME_LOCAL_MSG_MASK
+	case header.IsDef:
+		header.LocalMsgType = header.Byte &^ LOCAL_MSG_MASK
+	case header.IsData:
+		header.LocalMsgType = header.Byte &^ LOCAL_MSG_MASK
 	}
 }
