@@ -9,15 +9,18 @@ const (
 )
 
 const (
-	TS_MESSAGE   = "timestamp_message"
-	DEF_MESSAGE  = "def_message"
-	DATA_MESSAGE = "data_message"
+	NOT_A_MESSAGE = 0
+	TIME_MESSAGE  = 1
+	DEF_MESSAGE   = 2
+	DATA_MESSAGE  = 3
 )
 
 type MessageHeader struct {
+	HeaderByte   uint8
 	IsTimestamp  bool
 	IsDef        bool
 	IsData       bool
+	DevFlag      bool
 	MsgTypeSpec  bool
 	LocalMsgType uint8
 	TimeOffset   uint32
@@ -25,23 +28,19 @@ type MessageHeader struct {
 
 func ParseMessageHeader(header_byte byte) MessageHeader {
 	var mh MessageHeader
-	mh.IsTimestamp = header_byte&TIME_MSG_MASK == TIME_MSG_MASK
-	mh.IsDef = header_byte&DEF_MSG_MASK == DEF_MSG_MASK
-	if mh.IsDef == false {
-		mh.IsData = header_byte&DATA_MSG_MASK == DATA_MSG_MASK
-	}
+	mh.HeaderByte = header_byte
+	MessageType(&mh)
 	mh.LocalMsgType = header_byte &^ 0xF0
 	return mh
 }
 
-func MessageType(msg_header_byte byte) string {
+func MessageType(header *MessageHeader) {
 	switch {
-	case msg_header_byte&TIME_MSG_MASK == TIME_MSG_MASK:
-		return TS_MESSAGE
-	case msg_header_byte&DEF_MSG_MASK == DEF_MSG_MASK:
-		return DEF_MESSAGE
-	case msg_header_byte&DATA_MSG_MASK == DATA_MSG_MASK:
-		return DATA_MESSAGE
+	case header.HeaderByte&TIME_MSG_MASK == TIME_MSG_MASK:
+		header.IsTimestamp = true
+	case header.HeaderByte&DEF_MSG_MASK == DEF_MSG_MASK:
+		header.IsDef = true
+	case header.HeaderByte&DATA_MSG_MASK == DATA_MSG_MASK:
+		header.IsData = true
 	}
-	return "NONE"
 }
