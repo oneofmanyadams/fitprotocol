@@ -27,6 +27,7 @@ func ParseMessageHeader(header_byte byte) MessageHeader {
 	SetMessageHeaderType(&mh)
 	SetMessageLocalType(&mh)
 	SetMessageTimeOffset(&mh)
+	SetMessageDev(&mh)
 	return mh
 }
 
@@ -44,7 +45,7 @@ func SetMessageHeaderType(header *MessageHeader) {
 func SetMessageDev(header *MessageHeader) {
 	// still working on this
 	if (header.IsDef || header.IsData) &&
-		header.Byte&DEV_DATA_MASK == DEV_DATA_MASK {
+		DEV_DATA_MASK&header.Byte == DEV_DATA_MASK {
 		header.DevFlag = true
 	}
 }
