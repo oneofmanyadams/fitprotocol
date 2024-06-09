@@ -43,7 +43,6 @@ func SetMessageHeaderType(header *MessageHeader) {
 }
 
 func SetMessageDev(header *MessageHeader) {
-	// still working on this
 	if (header.IsDef || header.IsData) &&
 		DEV_DATA_MASK&header.Byte == DEV_DATA_MASK {
 		header.DevFlag = true
