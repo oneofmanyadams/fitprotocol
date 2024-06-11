@@ -11,8 +11,9 @@ const (
 )
 
 type FitReader struct {
-	File   *os.File
-	Buffer *bufio.Reader
+	File      *os.File
+	Buffer    *bufio.Reader
+	BytesRead int
 }
 
 func NewFitReader(file *os.File) (FitReader, error) {
@@ -33,6 +34,11 @@ func (s *FitReader) HeaderBytes() ([]byte, error) {
 		return []byte{}, read_err
 	}
 	return s.ReadBytes(0, header_size)
+}
+
+func (s *FitReader) ReadByte() (byte, error) {
+	s.BytesRead++
+	return s.Buffer.ReadByte()
 }
 
 func (s *FitReader) ReadBytes(offset, length int) ([]byte, error) {

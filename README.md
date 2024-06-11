@@ -6,15 +6,15 @@ https://developer.garmin.com/fit/overview/
 https://developer.garmin.com/fit/protocol/
 
 ToDo
-- Definition message parser
-    - Read message details
-    - ~~Header developer flag~~
-    - ~~Identify Messages~~
 - Clean up how header and data reads interact.
     - Read bytes out through separate logic.
     - ~~Can the header read be defined internally~~
         - ~~Or reads just broken out to a higher level that manages the header/data/CRC split?~~
         - ~~Currently Data read only works if Header has been initiated separately.~~
+- Definition message parser
+    - Read message details
+    - ~~Header developer flag~~
+    - ~~Identify Messages~~
 - Start on DataRecords parsing
 - Unit tests
     - CRC
