@@ -21,7 +21,7 @@ func NewFitReader(file *os.File) (FitReader, error) {
 }
 
 func (s *FitReader) HeaderSize() (int, error) {
-	header_size, read_err := s.ReadBytes(0, 1)
+	header_size, read_err := s.PeekBytes(0, 1)
 	if read_err != nil {
 		return 0, read_err
 	}
@@ -33,7 +33,7 @@ func (s *FitReader) HeaderBytes() ([]byte, error) {
 	if read_err != nil {
 		return []byte{}, read_err
 	}
-	return s.ReadBytes(0, header_size)
+	return s.PeekBytes(0, header_size)
 }
 
 func (s *FitReader) ReadByte() (byte, error) {
@@ -41,7 +41,7 @@ func (s *FitReader) ReadByte() (byte, error) {
 	return s.Buffer.ReadByte()
 }
 
-func (s *FitReader) ReadBytes(offset, length int) ([]byte, error) {
+func (s *FitReader) PeekBytes(offset, length int) ([]byte, error) {
 	b := make([]byte, length)
 	_, read_err := s.File.ReadAt(b, int64(offset))
 	if read_err != nil {
@@ -71,7 +71,7 @@ func (s *FitReader) CRCs() (bool, bool, error) {
 	header_matches = header_crc.Matches(header.CRC)
 
 	// Calaculate data CRC
-	data_bytes, err := s.ReadBytes(header.HeaderSize, int(header.DataSize))
+	data_bytes, err := s.PeekBytes(header.HeaderSize, int(header.DataSize))
 	if err != nil {
 		return header_matches, data_matches, err
 	}
@@ -80,7 +80,7 @@ func (s *FitReader) CRCs() (bool, bool, error) {
 		return header_matches, data_matches, err
 	}
 	// Get provided Data CRC from end of file
-	data_crc_bytes, err := s.ReadBytes(header.TotalSize(), DATA_CRC_SIZE)
+	data_crc_bytes, err := s.PeekBytes(header.TotalSize(), DATA_CRC_SIZE)
 	if err != nil {
 		return header_matches, data_matches, err
 	}
