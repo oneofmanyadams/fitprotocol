@@ -36,11 +36,6 @@ func (s *FitReader) HeaderBytes() ([]byte, error) {
 	return s.PeekBytes(0, header_size)
 }
 
-func (s *FitReader) ReadByte() (byte, error) {
-	s.BytesRead++
-	return s.Buffer.ReadByte()
-}
-
 func (s *FitReader) PeekBytes(offset, length int) ([]byte, error) {
 	b := make([]byte, length)
 	_, read_err := s.File.ReadAt(b, int64(offset))
@@ -48,6 +43,24 @@ func (s *FitReader) PeekBytes(offset, length int) ([]byte, error) {
 		return []byte{}, read_err
 	}
 	return b, nil
+}
+
+// Buffer Methods
+func (s *FitReader) ReadByte() (byte, error) {
+	s.BytesRead++
+	return s.Buffer.ReadByte()
+}
+
+func (s *FitReader) ReadBytes(bytes_len int) []byte {
+	var return_bytes []byte
+	for len(return_bytes) < bytes_len {
+		b, err := s.ReadByte()
+		if err != nil {
+			return return_bytes
+		}
+		return_bytes = append(return_bytes, b)
+	}
+	return return_bytes
 }
 
 // CRC consolidated checker
