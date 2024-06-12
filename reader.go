@@ -52,16 +52,16 @@ func (s *FitReader) ReadByte() (byte, error) {
 	return s.Buffer.ReadByte()
 }
 
-func (s *FitReader) ReadBytes(bytes_len int) []byte {
+func (s *FitReader) ReadBytes(bytes_len int) ([]byte, error) {
 	var return_bytes []byte
 	for len(return_bytes) < bytes_len {
 		b, err := s.ReadByte()
 		if err != nil {
-			return return_bytes
+			return return_bytes, err
 		}
 		return_bytes = append(return_bytes, b)
 	}
-	return return_bytes
+	return return_bytes, nil
 }
 
 // CRC consolidated checker
