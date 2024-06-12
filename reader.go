@@ -16,8 +16,8 @@ type FitReader struct {
 	BytesRead int
 }
 
-func NewFitReader(file *os.File) (FitReader, error) {
-	return FitReader{File: file, Buffer: bufio.NewReader(file)}, nil
+func NewFitReader(file *os.File) FitReader {
+	return FitReader{File: file, Buffer: bufio.NewReader(file)}
 }
 
 // Peek methods
