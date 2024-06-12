@@ -20,6 +20,7 @@ func NewFitReader(file *os.File) (FitReader, error) {
 	return FitReader{File: file, Buffer: bufio.NewReader(file)}, nil
 }
 
+// Peek methods
 func (s *FitReader) HeaderSize() (int, error) {
 	header_size, read_err := s.PeekBytes(0, 1)
 	if read_err != nil {
@@ -93,7 +94,7 @@ func (s *FitReader) CRCs() (bool, bool, error) {
 		return header_matches, data_matches, err
 	}
 	// Get provided Data CRC from end of file
-	data_crc_bytes, err := s.PeekBytes(header.TotalSize(), DATA_CRC_SIZE)
+	data_crc_bytes, err := s.PeekBytes(header.TotalFileSize(), DATA_CRC_SIZE)
 	if err != nil {
 		return header_matches, data_matches, err
 	}

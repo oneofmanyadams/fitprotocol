@@ -44,7 +44,7 @@ func DecodeHeader(b []byte) (Header, error) {
 	return h, nil
 }
 
-func (s *Header) TotalSize() int {
+func (s *Header) TotalFileSize() int {
 	return s.HeaderSize + int(s.DataSize)
 }
 
