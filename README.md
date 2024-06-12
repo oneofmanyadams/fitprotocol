@@ -6,12 +6,7 @@ https://developer.garmin.com/fit/overview/
 https://developer.garmin.com/fit/protocol/
 
 ToDo
-- Clean up how header and data reads interact.
-    - Read bytes out through separate logic.
-    - ~~Add better erro handeling to ReadBytes method.~~
-    - ~~Can the header read be defined internally~~
-        - ~~Or reads just broken out to a higher level that manages the header/data/CRC split?~~
-        - ~~Currently Data read only works if Header has been initiated separately.~~
+
 - Definition message parser
     - Read message details
     - ~~Header developer flag~~
@@ -21,7 +16,8 @@ ToDo
     - CRC
     - Header
     - Data
-- ~~Parse CRC~~
+- Parse CRC
+    - Move CRC checker function out of reader and into the CRC file?
     - ~~Better standardize how CRCs are pulled out and compared?~~
         - ~~Standardize how header/data bytes are pulled out.~~
         - ~~Standardize how offsets are set.~~
@@ -29,6 +25,12 @@ ToDo
     - ~~More structual CRC logic.~~
     - ~~Logic to easily compare Header/EOF CRC value to CRC func output?~~
     - ~~Write initial CRC func~~
+- ~~Clean up how header and data reads interact.~~
+    - ~~Read bytes out through separate logic.~~
+    - ~~Add better erro handeling to ReadBytes method.~~
+    - ~~Can the header read be defined internally~~
+        - ~~Or reads just broken out to a higher level that manages the header/data/CRC split?~~
+        - ~~Currently Data read only works if Header has been initiated separately.~~
 - ~~Better error handling~~
     - ~~You still have println(err)'s in here dummy~~
 - ~~Header parser~~
