@@ -9,6 +9,8 @@ ToDo
 
 - Definition message parser
     - Read message details
+        - "Record Content"
+            - Record Header (1b), Reserved(1b), Architecture(1b), etc...
     - ~~Header developer flag~~
     - ~~Identify Messages~~
 - Start on DataRecords parsing
