@@ -17,11 +17,6 @@ func MsgFixedContentSize() int {
 		MSG_FIELD_COUNT_SIZE
 }
 
-func NewDefinitionMessage(b []byte) DefinitionMessage {
-	var dm DefinitionMessage
-	return dm
-}
-
 type DefinitionMessage struct {
 	Architecture        uint8
 	GlobalMessageNumber uint16
@@ -30,6 +25,14 @@ type DefinitionMessage struct {
 	DevFlag             bool
 	NumberOfDevFields   uint8
 	DevFieldDefinitions []FieldDefinition
+}
+
+func NewDefinitionMessage(b []byte) DefinitionMessage {
+	var dm DefinitionMessage
+	dm.Architecture = b[1]
+	dm.GlobalMessageNumber = uint16(b[2])<<8 + uint16(b[3])
+	dm.NumberOfFields = b[4]
+	return dm
 }
 
 func (s *DefinitionMessage) AddFieldDef() {}
