@@ -35,7 +35,14 @@ func NewDefinitionMessage(b []byte) DefinitionMessage {
 	return dm
 }
 
-func (s *DefinitionMessage) AddFieldDef() {}
+func (s *DefinitionMessage) AddFieldDef(bytes []byte) {
+	var fd FieldDefinition
+	for _, b := range bytes {
+		fd.Bytes = append(fd.Bytes, b)
+	}
+	s.FieldDefinitions = append(s.FieldDefinitions, fd)
+}
 
 type FieldDefinition struct {
+	Bytes []byte
 }
