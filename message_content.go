@@ -18,7 +18,7 @@ func MsgFixedContentSize() int {
 }
 
 type DefinitionMessage struct {
-	Architecture        uint8
+	Architecture        uint8 // 0 is little endian.
 	GlobalMessageNumber uint16
 	NumberOfFields      uint8
 	FieldDefinitions    []FieldDefinition
@@ -44,5 +44,8 @@ func (s *DefinitionMessage) AddFieldDef(bytes []byte) {
 }
 
 type FieldDefinition struct {
-	Bytes []byte
+	Number   uint8 //Defined in the global fit profile for the specified message.
+	Size     uint8 // size in bytes of specifieed fit message's field.
+	BaseType uint8 // (unsigned char, etc...) defined in fit.h in SDK
+	Bytes    []byte
 }
