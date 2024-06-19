@@ -8,11 +8,12 @@ https://developer.garmin.com/fit/protocol/
 ToDo
 
 - Definition message parser
-    - Find Global Fit Profile (in SDK??).
     - Read message details
         - "Record Content"
             - Read Field definitions.
             - ~Record Header (1b), Reserved(1b), Architecture(1b), etc...~
+    - Find Global Fit Profile (in SDK??).
+    - ~~Copy over base type definitions from SDK~~
     - ~~Header developer flag~~
     - ~~Identify Messages~~
 - Start on DataRecords parsing
