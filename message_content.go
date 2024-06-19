@@ -1,5 +1,7 @@
 package fitprotocol
 
+import "errors"
+
 const (
 	MSG_RESERVED_SIZE        = 1
 	MSG_ARCHITECTURE_SIZE    = 1
@@ -35,12 +37,17 @@ func NewDefinitionMessage(b []byte) DefinitionMessage {
 	return dm
 }
 
-func (s *DefinitionMessage) AddFieldDef(bytes []byte) {
+func (s *DefinitionMessage) AddFieldDef(bytes []byte) error {
 	var fd FieldDefinition
-	for _, b := range bytes {
-		fd.Bytes = append(fd.Bytes, b)
+	if len(bytes) != MSG_FIELD_DEF_SIZE {
+		return errors.New("Incorrect amount of bytes provided.")
 	}
+	fd.Number = bytes[0]
+	fd.Size = bytes[1]
+	fd.BaseType = bytes[2]
+	fd.Bytes = bytes
 	s.FieldDefinitions = append(s.FieldDefinitions, fd)
+	return nil
 }
 
 type FieldDefinition struct {
