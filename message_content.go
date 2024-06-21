@@ -50,6 +50,14 @@ func (s *DefinitionMessage) AddFieldDef(bytes []byte) error {
 	return nil
 }
 
+func (s *DefinitionMessage) DataMessageSize() int {
+	var size int
+	for _, f := range s.FieldDefinitions {
+		size = size + int(f.Size)
+	}
+	return size
+}
+
 type FieldDefinition struct {
 	Number   uint8 //Defined in the global fit profile for the specified message.
 	Size     uint8 // size in bytes of specifieed fit message's field.
