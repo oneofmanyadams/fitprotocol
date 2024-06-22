@@ -58,6 +58,22 @@ func (s *DefinitionMessage) DataMessageSize() int {
 	return size
 }
 
+func (s *DefinitionMessage) ParseDataMessage(b []byte) ([][]byte, error) {
+	var datas [][]byte
+	var bytes_read int
+	if len(b) != s.DataMessageSize() {
+		return datas, errors.New("Size of provided bytes does not match expected data fields size.")
+	}
+	for len(datas) < len(s.FieldDefinitions) {
+		var dta []byte
+		size := s.FieldDefinitions[len(datas)].Size
+		dta = b[bytes_read : bytes_read+int(size)]
+		datas = append(datas, dta)
+		bytes_read = bytes_read + int(size)
+	}
+	return datas, nil
+}
+
 type FieldDefinition struct {
 	Number   uint8 //Defined in the global fit profile for the specified message.
 	Size     uint8 // size in bytes of specifieed fit message's field.

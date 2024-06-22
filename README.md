@@ -12,6 +12,7 @@ ToDo
         - Read data messages
             - Determine order of data? Is it the same order as defined in def or is it in the order of the field def numbers?
         - Convert message data from bytes into format defined by definition message type.
+        - Read timestamp messages.
         - ~"Record Content"~
             - ~Read Field definitions.~
             - ~Record Header (1b), Reserved(1b), Architecture(1b), etc...~
