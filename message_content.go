@@ -58,16 +58,18 @@ func (s *DefinitionMessage) DataMessageSize() int {
 	return size
 }
 
-func (s *DefinitionMessage) ParseDataMessage(b []byte) ([][]byte, error) {
-	var datas [][]byte
+func (s *DefinitionMessage) ParseDataMessage(b []byte) ([]DataPoint, error) {
+	var datas []DataPoint
 	var bytes_read int
 	if len(b) != s.DataMessageSize() {
 		return datas, errors.New("Size of provided bytes does not match expected data fields size.")
 	}
 	for len(datas) < len(s.FieldDefinitions) {
-		var dta []byte
+		var dta DataPoint
 		size := s.FieldDefinitions[len(datas)].Size
-		dta = b[bytes_read : bytes_read+int(size)]
+		type_bytes := s.FieldDefinitions[len(datas)].BaseType
+		dta.Bytes = b[bytes_read : bytes_read+int(size)]
+		dta.Type = BaseTypeName(type_bytes)
 		datas = append(datas, dta)
 		bytes_read = bytes_read + int(size)
 	}

@@ -1,5 +1,6 @@
 package fitprotocol
 
+// The types ending in "z" just have a different invalid (default) value.
 const (
 	BASE_TYPE_ENUM    = 0x00
 	BASE_TYPE_SINT8   = 0x01
