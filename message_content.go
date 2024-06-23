@@ -74,6 +74,11 @@ func (s *DefinitionMessage) ParseDataMessage(b []byte) ([][]byte, error) {
 	return datas, nil
 }
 
+type DataPoint struct {
+	Bytes []byte
+	Type  string
+}
+
 type FieldDefinition struct {
 	Number   uint8 //Defined in the global fit profile for the specified message.
 	Size     uint8 // size in bytes of specifieed fit message's field.
