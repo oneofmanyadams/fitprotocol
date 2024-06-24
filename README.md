@@ -10,7 +10,8 @@ https://blog.studioblueplanet.net/software/java-garminant-fit-file-reader
 ToDo
 
 - Definition message parser
-    - Move BaseTypes in "fit.go" from constants to types to more easily support conversions, naming, invalid vlaues, etc...
+    - Methods for DataType that add functionality (like find type by BaseTypeField)
+    - Switch logic over to using BaseTypes.
     - Read message details
         - Read data messages
             - Determine order of data? Is it the same order as defined in def or is it in the order of the field def numbers?
@@ -20,6 +21,7 @@ ToDo
             - ~Read Field definitions.~
             - ~Record Header (1b), Reserved(1b), Architecture(1b), etc...~
     - Find Global Fit Profile (in SDK??).
+    - ~~Move BaseTypes in "fit.go" from constants to types to more easily support conversions, naming, invalid vlaues, etc...~~
     - ~~Copy over base type definitions from SDK~~
     - ~~Header developer flag~~
     - ~~Identify Messages~~
