@@ -1,6 +1,17 @@
 package fitprotocol
 
+import "errors"
+
 type DataTypes []DataType
+
+func (s DataTypes) GetBaseType(btf uint8) (DataType, error) {
+	for _, data_type := range s {
+		if data_type.BaseTypeField == btf {
+			return data_type, nil
+		}
+	}
+	return DataType{}, errors.New("No matching type found")
+}
 
 type DataType struct {
 	BaseTypeNumber int
