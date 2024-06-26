@@ -69,7 +69,13 @@ func (s *DefinitionMessage) ParseDataMessage(b []byte) ([]DataPoint, error) {
 		size := s.FieldDefinitions[len(datas)].Size
 		type_bytes := s.FieldDefinitions[len(datas)].BaseType
 		dta.Bytes = b[bytes_read : bytes_read+int(size)]
-		dta.Type = BaseTypeName(type_bytes)
+		// dta.Type = BaseTypeName(type_bytes)
+		data_type, dt_err := BASE_TYPES.GetBaseType(type_bytes)
+		if dt_err != nil {
+			return []DataPoint{}, dt_err
+		}
+		dta.Type = data_type.Name
+
 		datas = append(datas, dta)
 		bytes_read = bytes_read + int(size)
 	}
