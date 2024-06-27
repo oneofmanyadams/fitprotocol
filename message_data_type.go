@@ -22,6 +22,28 @@ type DataType struct {
 	Size           uint8
 }
 
+func (s *DataType) ConvertData(b byte) {
+	switch s.Name {
+	case "enum":
+	case "sint8":
+	case "uint8":
+	case "sint16":
+	case "uit16":
+	case "sint32":
+	case "uint32":
+	case "string":
+	case "float32":
+	case "float64":
+	case "uint8z":
+	case "uint16z":
+	case "uint32z":
+	case "byte":
+	case "sint64":
+	case "uint64":
+	case "uint64z":
+	}
+}
+
 var BASE_TYPES = DataTypes{
 	DataType{
 		BaseTypeNumber: 0,
