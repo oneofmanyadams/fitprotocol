@@ -1,6 +1,10 @@
 package fitprotocol
 
-import "errors"
+import (
+	//"encoding/binary"
+	"errors"
+	"fmt"
+)
 
 type DataTypes []DataType
 
@@ -22,26 +26,33 @@ type DataType struct {
 	Size           uint8
 }
 
-func (s *DataType) ConvertData(b byte) {
+func (s *DataType) ConvertData(b []byte) (string, error) {
 	switch s.Name {
 	case "enum":
+		return "an enum", nil
 	case "sint8":
+		return string(int8(b[0])), nil
 	case "uint8":
+		return string(uint8(b[0])), nil
 	case "sint16":
+	// utilize big/little endian, both ability and definition
 	case "uit16":
 	case "sint32":
 	case "uint32":
 	case "string":
+		return string(b), nil
 	case "float32":
 	case "float64":
 	case "uint8z":
 	case "uint16z":
 	case "uint32z":
 	case "byte":
+		return fmt.Sprintf("%08b", b[0]), nil
 	case "sint64":
 	case "uint64":
 	case "uint64z":
 	}
+	return "", errors.New("No matching type to covnert.")
 }
 
 var BASE_TYPES = DataTypes{
