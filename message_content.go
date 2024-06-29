@@ -1,6 +1,8 @@
 package fitprotocol
 
-import "errors"
+import (
+	"errors"
+)
 
 const (
 	MSG_RESERVED_SIZE        = 1
@@ -73,7 +75,11 @@ func (s *DefinitionMessage) ParseDataMessage(b []byte) ([]DataPoint, error) {
 		if dt_err != nil {
 			return []DataPoint{}, dt_err
 		}
-		dta.Type = data_type.Name
+		var conv_err error
+		dta.Type, conv_err = data_type.ConvertData(dta.Bytes, s.Architecture)
+		if conv_err != nil {
+			return []DataPoint{}, errors.Join(conv_err, errors.New(data_type.Name))
+		}
 
 		datas = append(datas, dta)
 		bytes_read = bytes_read + int(size)
