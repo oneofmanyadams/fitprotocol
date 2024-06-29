@@ -1,7 +1,8 @@
 package fitprotocol
 
 import (
-	//"encoding/binary"
+	"bytes"
+	"encoding/binary"
 	"errors"
 	"fmt"
 )
@@ -26,31 +27,90 @@ type DataType struct {
 	Size           uint8
 }
 
-func (s *DataType) ConvertData(b []byte) (string, error) {
+func (s *DataType) ConvertData(b []byte, arch uint8) (string, error) {
 	switch s.Name {
 	case "enum":
 		return "an enum", nil
 	case "sint8":
-		return string(int8(b[0])), nil
+		return fmt.Sprint(int8(b[0])), nil
 	case "uint8":
-		return string(uint8(b[0])), nil
+		return fmt.Sprint(uint8(b[0])), nil
 	case "sint16":
-	// utilize big/little endian, both ability and definition
-	case "uit16":
+		if arch == 0 {
+			return fmt.Sprint(int16(binary.LittleEndian.Uint16(b))), nil
+		} else {
+			return fmt.Sprint(int16(binary.BigEndian.Uint16(b))), nil
+		}
+	case "uint16":
+		if arch == 0 {
+			return fmt.Sprint(binary.LittleEndian.Uint16(b)), nil
+		} else {
+			return fmt.Sprint(binary.BigEndian.Uint16(b)), nil
+		}
 	case "sint32":
+		if arch == 0 {
+			return fmt.Sprint(int32(binary.LittleEndian.Uint32(b))), nil
+		} else {
+			return fmt.Sprint(int32(binary.BigEndian.Uint32(b))), nil
+		}
 	case "uint32":
+		if arch == 0 {
+			return fmt.Sprint(binary.LittleEndian.Uint32(b)), nil
+		} else {
+			return fmt.Sprint(binary.BigEndian.Uint32(b)), nil
+		}
 	case "string":
 		return string(b), nil
 	case "float32":
+		var f float32
+		if arch == 0 {
+			binary.Read(bytes.NewReader(b), binary.LittleEndian, &f)
+		} else {
+			binary.Read(bytes.NewReader(b), binary.BigEndian, &f)
+		}
+		return fmt.Sprint(f), nil
 	case "float64":
+		var f float64
+		if arch == 0 {
+			binary.Read(bytes.NewReader(b), binary.LittleEndian, &f)
+		} else {
+			binary.Read(bytes.NewReader(b), binary.BigEndian, &f)
+		}
+		return fmt.Sprint(f), nil
 	case "uint8z":
+		return fmt.Sprint(uint8(b[0])), nil
 	case "uint16z":
+		if arch == 0 {
+			return fmt.Sprint(binary.LittleEndian.Uint16(b)), nil
+		} else {
+			return fmt.Sprint(binary.BigEndian.Uint16(b)), nil
+		}
 	case "uint32z":
+		if arch == 0 {
+			return fmt.Sprint(binary.LittleEndian.Uint32(b)), nil
+		} else {
+			return fmt.Sprint(binary.BigEndian.Uint32(b)), nil
+		}
 	case "byte":
 		return fmt.Sprintf("%08b", b[0]), nil
 	case "sint64":
+		if arch == 0 {
+			return fmt.Sprint(int64(binary.LittleEndian.Uint64(b))), nil
+		} else {
+			return fmt.Sprint(int64(binary.BigEndian.Uint64(b))), nil
+		}
 	case "uint64":
+		if arch == 0 {
+			return fmt.Sprint(binary.LittleEndian.Uint64(b)), nil
+		} else {
+			return fmt.Sprint(binary.BigEndian.Uint64(b)), nil
+		}
 	case "uint64z":
+		if arch == 0 {
+			return fmt.Sprint(binary.LittleEndian.Uint64(b)), nil
+		} else {
+			return fmt.Sprint(binary.BigEndian.Uint64(b)), nil
+		}
 	}
 	return "", errors.New("No matching type to covnert.")
 }
