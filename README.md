@@ -10,17 +10,19 @@ https://blog.studioblueplanet.net/software/java-garminant-fit-file-reader
 ToDo
 
 - Definition message parser
+    - Find Global Fit Profile (in SDK??).
+        - Create data types and methods to facilitate global fit lookups
+        - Make a transpiler to convert one of the Profiles from the SDK?
     - Methods for DataType that add functionality (like find type by BaseTypeField)
     - Switch logic over to using BaseTypes.
     - Read message details
-        - Read data messages
-            - Determine order of data? Is it the same order as defined in def or is it in the order of the field def numbers?
-        - Convert message data from bytes into format defined by definition message type.
+        - ~Read data messages~
+            - ~Determine order of data? Is it the same order as defined in def or is it in the order of the field def numbers?~
+        - ~Convert message data from bytes into format defined by definition message type.~
         - Read timestamp messages.
         - ~"Record Content"~
             - ~Read Field definitions.~
             - ~Record Header (1b), Reserved(1b), Architecture(1b), etc...~
-    - Find Global Fit Profile (in SDK??).
     - ~~Move BaseTypes in "fit.go" from constants to types to more easily support conversions, naming, invalid vlaues, etc...~~
     - ~~Copy over base type definitions from SDK~~
     - ~~Header developer flag~~
