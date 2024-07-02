@@ -1,6 +1,7 @@
 package fitprotocol
 
 import (
+	"encoding/binary"
 	"errors"
 )
 
@@ -34,7 +35,12 @@ type DefinitionMessage struct {
 func NewDefinitionMessage(b []byte) DefinitionMessage {
 	var dm DefinitionMessage
 	dm.Architecture = b[1]
-	dm.GlobalMessageNumber = uint16(b[2])<<8 + uint16(b[3])
+	//dm.GlobalMessageNumber = uint16(b[2])<<8 + uint16(b[3])
+	if dm.Architecture == 0 {
+		dm.GlobalMessageNumber = binary.LittleEndian.Uint16([]byte{b[2], b[3]})
+	} else {
+		dm.GlobalMessageNumber = binary.BigEndian.Uint16([]byte{b[2], b[3]})
+	}
 	dm.NumberOfFields = b[4]
 	return dm
 }
