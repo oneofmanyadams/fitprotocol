@@ -2,6 +2,12 @@ package fitprotocol
 
 import "fmt"
 
+// Change this to be just for reading definition messages.
+
+// Create a 2nd helper func for reading data messages.
+
+// Third func for reading timestamp messages?
+
 func ReadRecords(fit_reader *FitReader) {
 	fmt.Println("-------------------------------------------------")
 	// Read Message Type

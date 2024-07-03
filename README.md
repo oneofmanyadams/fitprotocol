@@ -10,9 +10,11 @@ https://blog.studioblueplanet.net/software/java-garminant-fit-file-reader
 ToDo
 
 - Definition message parser
+    - Finish util funcs.
     - Find Global Fit Profile (in SDK??).
         - Create data types and methods to facilitate global fit lookups
         - Make a transpiler to convert one of the Profiles from the SDK?
+    - Convert data message based on Global message data (from SDK's profile.xlsx file)
     - Methods for DataType that add functionality (like find type by BaseTypeField)
     - Switch logic over to using BaseTypes.
     - Read message details
