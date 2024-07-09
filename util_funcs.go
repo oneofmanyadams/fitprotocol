@@ -2,14 +2,12 @@ package fitprotocol
 
 import "fmt"
 
-// Change this to be just for reading definition messages.
-
 // Create a 2nd helper func for reading data messages.
 
 // Third func for reading timestamp messages?
 
 func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
-	fmt.Println("-------------------------------------------------")
+	fmt.Println("----------Definition Message---------------------")
 	// Read Message Type
 	msg_header_bytes, _ := fit_reader.ReadByte()
 	fmt.Println("")
@@ -36,4 +34,19 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	}
 	fmt.Println("")
 	return def_msg
+}
+
+func ReadDataMsg(fit_reader *FitReader, def_msg DefinitionMessage) {
+	fmt.Println("-------------Data Message------------------------")
+	// Read data message header
+	fmt.Println("")
+	fmt.Println("--Message Header:")
+	msg_header_bytes, _ := fit_reader.ReadByte()
+	fmt.Printf("\n%+v\n", ParseMessageHeader(msg_header_bytes))
+	// chunk out data message based on def message
+	fmt.Println("")
+	fmt.Println("--Data message:")
+	data_bytes, _ := fit_reader.ReadBytes(def_msg.DataMessageSize())
+	fmt.Println(def_msg.ParseDataMessage(data_bytes))
+	fmt.Println("")
 }
