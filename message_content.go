@@ -104,3 +104,13 @@ type FieldDefinition struct {
 	BaseType uint8 // (unsigned char, etc...) defined in fit.h in SDK
 	Bytes    []byte
 }
+
+func (s *DefinitionMessage) ParseTimestampMessage(b []byte) {
+
+}
+
+type TimestampMessage struct {
+	HeaderFlag       int // 7th bit
+	LocalMessageType int // bits 5 and 6
+	TimeOffset       int // bits 0 through 4
+}
