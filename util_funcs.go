@@ -50,3 +50,12 @@ func ReadDataMsg(fit_reader *FitReader, def_msg DefinitionMessage) {
 	fmt.Println(def_msg.ParseDataMessage(data_bytes))
 	fmt.Println("")
 }
+
+func ReadTimestampMsg(fit_reader *FitReader, def_msg DefinitionMessage) {
+	fmt.Println("-------------Data Message------------------------")
+	// Read data message header
+	fmt.Println("")
+	fmt.Println("--Message Header:")
+	msg_header_bytes, _ := fit_reader.ReadByte()
+	fmt.Printf("\n%+v\n", ParseMessageHeader(msg_header_bytes))
+}
