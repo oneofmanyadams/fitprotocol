@@ -11,6 +11,7 @@ ToDo
 
 - Definition message parser
     - Read message details
+        - Read dev fields.
         - Read timestamp messages.
         - ~Read data messages~
             - ~Determine order of data? Is it the same order as defined in def or is it in the order of the field def numbers?~

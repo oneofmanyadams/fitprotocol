@@ -12,10 +12,12 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	msg_header_bytes, _ := fit_reader.ReadByte()
 	fmt.Println("")
 	fmt.Println("--Message Header:")
-	fmt.Printf("%+v\n", ParseMessageHeader(msg_header_bytes))
+	msg_header := ParseMessageHeader(msg_header_bytes)
+	fmt.Printf("%+v\n", msg_header)
 	// read fixed length part of def message
 	fixed_msg_bytes, _ := fit_reader.ReadBytes(MsgFixedContentSize())
 	def_msg := NewDefinitionMessage(fixed_msg_bytes)
+	def_msg.DevFlag = msg_header.DevFlag
 	fmt.Println("")
 	fmt.Println("--Definition message:")
 	fmt.Printf("%+v\n", def_msg)
@@ -23,6 +25,14 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	for len(def_msg.FieldDefinitions) < int(def_msg.NumberOfFields) {
 		field_bytes, _ := fit_reader.ReadBytes(MSG_FIELD_DEF_SIZE)
 		def_msg.AddFieldDef(field_bytes)
+	}
+	// Read dev data (if applicable)
+	if def_msg.DevFlag {
+		dev_field_number, _ := fit_reader.ReadByte()
+		def_msg.NumberOfDevFields = uint8(dev_field_number)
+		fmt.Println("Number of dev fields: ", def_msg.NumberOfDevFields)
+		// We've read number of dev fields, now use that to read the actual
+		// definition data (similar logic to reg fields above.
 	}
 	// display field definition data
 	for _, field := range def_msg.FieldDefinitions {
