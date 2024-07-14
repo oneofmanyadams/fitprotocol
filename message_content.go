@@ -29,7 +29,7 @@ type DefinitionMessage struct {
 	FieldDefinitions    []FieldDefinition
 	DevFlag             bool
 	NumberOfDevFields   uint8
-	DevFieldDefinitions []FieldDefinition
+	DevFieldDefinitions []DevFieldDefinition
 }
 
 func NewDefinitionMessage(b []byte) DefinitionMessage {
@@ -110,6 +110,23 @@ type DevFieldDefinition struct {
 	Size         uint8 // size in bytes of specifieed fit message's field.
 	DevDataIndex uint8 // maps to developer_data_index of a developer_data_id msg
 	Bytes        []byte
+}
+
+func (s *DefinitionMessage) AddDevFieldDef(bytes []byte) error {
+	var fd DevFieldDefinition
+	if len(bytes) != MSG_FIELD_DEF_SIZE_DEV {
+		return errors.New("Incorrect amount of bytes provided.")
+	}
+	fd.Number = bytes[0]
+	fd.Size = bytes[1]
+	fd.DevDataIndex = bytes[2]
+	fd.Bytes = bytes
+	s.DevFieldDefinitions = append(s.DevFieldDefinitions, fd)
+	return nil
+}
+
+func (s *DefinitionMessage) ParseDevMessage(b []byte) {
+
 }
 
 func (s *DefinitionMessage) ParseTimestampMessage(b []byte) {
