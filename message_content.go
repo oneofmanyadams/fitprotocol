@@ -105,6 +105,13 @@ type FieldDefinition struct {
 	Bytes    []byte
 }
 
+type DevFieldDefinition struct {
+	Number       uint8 // maps to field_def_number of a field_Description msg.
+	Size         uint8 // size in bytes of specifieed fit message's field.
+	DevDataIndex uint8 // maps to developer_data_index of a developer_data_id msg
+	Bytes        []byte
+}
+
 func (s *DefinitionMessage) ParseTimestampMessage(b []byte) {
 
 }
