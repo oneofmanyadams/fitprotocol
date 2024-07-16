@@ -9,6 +9,8 @@ https://blog.studioblueplanet.net/software/java-garminant-fit-file-reader
 
 ToDo
 
+- Get basic building blocks figured out.
+    - Go to version 0.0.1 and refactor to start on actual library.
 - Definition message parser
     - Read message details
         - Read dev fields.

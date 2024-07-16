@@ -39,6 +39,10 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	// display field definition data
 	for _, field := range def_msg.FieldDefinitions {
 		data_type, err := BASE_TYPES.GetBaseType(field.BaseType)
+		/*
+			No matching type found
+			Where are these missing types?
+		*/
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -48,7 +52,7 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	// display dev definition data
 	if def_msg.DevFlag {
 		for _, dev_field := range def_msg.DevFieldDefinitions {
-			fmt.Println(dev_field)
+			fmt.Printf("%+v\n", dev_field)
 		}
 	}
 	return def_msg

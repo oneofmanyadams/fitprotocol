@@ -1,0 +1,10 @@
+1. Open FIT file
+2. Create a FIT file reader
+3. Read file header
+4. Validate header CRC
+5. Validate file CRC
+6. Loop through data records
+	1. Determine if next message is definition/data message.
+	2. If definition message, read as such.
+	3. If data message, determine if regular or timestamp
+
