@@ -3,6 +3,7 @@ package fitprotocol
 import (
 	"encoding/binary"
 	"errors"
+	"strconv"
 )
 
 const (
@@ -93,6 +94,23 @@ func (s *DefinitionMessage) ParseDataMessage(b []byte) ([]DataPoint, error) {
 	return datas, nil
 }
 
+func (s *DefinitionMessage) MessageNumber() (MsgNum, error) {
+	for _, msg_num := range MESSAGE_NUMBERS {
+		if msg_num.Number == int(s.GlobalMessageNumber) {
+			return msg_num, nil
+		}
+	}
+	return MsgNum{}, errors.New("NO MATCHING NAME FOR " + strconv.Itoa(int(s.GlobalMessageNumber)))
+}
+
+func (s *DefinitionMessage) MessageName() string {
+	msg_num, err := s.MessageNumber()
+	if err != nil {
+		return err.Error()
+	}
+	return msg_num.Name
+}
+
 type DataPoint struct {
 	Bytes []byte
 	Type  string
@@ -103,6 +121,15 @@ type FieldDefinition struct {
 	Size     uint8 // size in bytes of specifieed fit message's field.
 	BaseType uint8 // (unsigned char, etc...) defined in fit.h in SDK
 	Bytes    []byte
+}
+
+func (s *FieldDefinition) FieldName(msg_num MsgNum) string {
+	for _, field := range msg_num.Fields {
+		if field.Number == s.Number {
+			return field.Name
+		}
+	}
+	return "NO MATCHING NAME FOR " + msg_num.Name + " " + strconv.Itoa(int(s.Number))
 }
 
 type DevFieldDefinition struct {

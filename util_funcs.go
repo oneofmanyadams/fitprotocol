@@ -1,6 +1,9 @@
 package fitprotocol
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 // Create a 2nd helper func for reading data messages.
 
@@ -20,6 +23,8 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	def_msg.DevFlag = msg_header.DevFlag
 	fmt.Println("")
 	fmt.Println("--Definition message:")
+	def_msg_number, _ := def_msg.MessageNumber()
+	fmt.Print(def_msg.MessageName())
 	fmt.Printf("%+v\n", def_msg)
 	// read variable length part of data message
 	for len(def_msg.FieldDefinitions) < int(def_msg.NumberOfFields) {
@@ -42,11 +47,22 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 		/*
 			No matching type found
 			Where are these missing types?
+
+			!! it looks like they are defined by data records.
+			!! There is a definition messgae for Developer Data Id
+				and Field Description.
+			!! These combined look like they likely provide what is needed
+				to parse the dev related messages.
 		*/
 		if err != nil {
 			fmt.Println(err)
+			// temporary to find first error instance
+			os.Exit(1)
 		}
-		fmt.Printf("%+v\n", data_type)
+		// read data types into human readable names.
+		fmt.Print(field.FieldName(def_msg_number))
+		fmt.Printf(" %+v\n", data_type)
+
 	}
 	fmt.Println("")
 	// display dev definition data

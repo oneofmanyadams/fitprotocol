@@ -8,10 +8,23 @@ type MsgNums []MsgNum
 type MsgNum struct {
 	Name   string
 	Number int
+	Fields []MsgField
+}
+type MsgField struct {
+	Name   string
+	Number uint8
 }
 
 var MESSAGE_NUMBERS = MsgNums{
-	{Name: "file_id", Number: 0},
+	{Name: "file_id", Number: 0, Fields: []MsgField{
+		{Name: "type", Number: 0},
+		{Name: "manufacturer", Number: 1},
+		{Name: "product", Number: 2},
+		{Name: "serial number", Number: 3},
+		{Name: "time created", Number: 4},
+		{Name: "number", Number: 5},
+		{Name: "product name", Number: 8},
+	}},
 	{Name: "hr_zone", Number: 8},
 	{Name: "power_zone", Number: 9},
 	{Name: "sport", Number: 12},
