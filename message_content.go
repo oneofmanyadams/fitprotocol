@@ -100,7 +100,7 @@ func (s *DefinitionMessage) MessageNumber() (MsgNum, error) {
 			return msg_num, nil
 		}
 	}
-	return MsgNum{}, errors.New("NO MATCHING NAME FOR " + strconv.Itoa(int(s.GlobalMessageNumber)))
+	return MsgNum{}, errors.New("NO MATCHING MESSAGE NAME FOR " + strconv.Itoa(int(s.GlobalMessageNumber)))
 }
 
 func (s *DefinitionMessage) MessageName() string {
@@ -129,7 +129,7 @@ func (s *FieldDefinition) FieldName(msg_num MsgNum) string {
 			return field.Name
 		}
 	}
-	return "NO MATCHING NAME FOR " + msg_num.Name + " " + strconv.Itoa(int(s.Number))
+	return "NO MATCHING FIELD NAME FOR " + msg_num.Name + " " + strconv.Itoa(int(s.Number))
 }
 
 type DevFieldDefinition struct {
