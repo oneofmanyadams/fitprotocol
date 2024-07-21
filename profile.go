@@ -2,7 +2,20 @@ package fitprotocol
 
 // Profile information is in Profile.xlsx in SDK
 type Profile struct {
+	Version      ProfVersion
+	CommonFields CommonFields
+	Messages     []Message
+	Types        ProfType
+	MesgNum      MesgNum
 }
+
+type ProfVersion struct{}
+type CommonFields struct{}
+type Message struct{}
+type ProfType struct{}
+type MesgNum struct{}
+
+// Depricate the stuff below, use the js SDK profile as a reference.
 
 type MsgNums []MsgNum
 type MsgNum struct {
