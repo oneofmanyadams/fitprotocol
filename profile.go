@@ -15,6 +15,14 @@ type Message struct{}
 type ProfType struct{}
 type MesgNum struct{}
 
+var PROFILE = Profile{
+	Version:      ProfVersion{},
+	CommonFields: CommonFields{},
+	Messages:     []Message{},
+	Types:        ProfType{},
+	MesgNum:      MesgNum{},
+}
+
 // Depricate the stuff below, use the js SDK profile as a reference.
 
 type MsgNums []MsgNum
