@@ -5,22 +5,37 @@ type Profile struct {
 	Version      ProfVersion
 	CommonFields CommonFields
 	Messages     []Message
-	Types        ProfType
-	MesgNum      MesgNum
+	Types        []Type
+	MesgNum      []MesgNum
 }
 
-type ProfVersion struct{}
-type CommonFields struct{}
+type ProfVersion struct {
+	Major int
+	Minor int
+	patch int
+	Type  string
+}
+type CommonFields struct {
+	PartIndex    int
+	Timestamp    int
+	MessageIndex int
+}
 type Message struct{}
-type ProfType struct{}
-type MesgNum struct{}
+type Type struct {
+	Name   string
+	Values map[int]string
+}
+type MesgNum struct {
+	Name  string
+	Index int
+}
 
 var PROFILE = Profile{
 	Version:      ProfVersion{},
 	CommonFields: CommonFields{},
 	Messages:     []Message{},
-	Types:        ProfType{},
-	MesgNum:      MesgNum{},
+	Types:        []Type{},
+	MesgNum:      []MesgNum{},
 }
 
 // Depricate the stuff below, use the js SDK profile as a reference.
