@@ -20,7 +20,28 @@ type CommonFields struct {
 	Timestamp    int
 	MessageIndex int
 }
-type Message struct{}
+
+type Message struct {
+	Num         int
+	Name        string
+	MessagesKey string
+	Fields      []Field
+}
+type Field struct {
+	Num           int
+	Name          string
+	Type          string
+	Array         bool
+	Scale         int
+	Offset        int
+	Units         string
+	Bits          []int
+	Components    []int
+	IsAccumulated bool
+	HasComponents bool
+	SubFields     []int
+}
+
 type Type struct {
 	Name   string
 	Values map[int]string
