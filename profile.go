@@ -12,7 +12,7 @@ type Profile struct {
 type ProfVersion struct {
 	Major int
 	Minor int
-	patch int
+	Patch int
 	Type  string
 }
 type CommonFields struct {
@@ -39,7 +39,13 @@ type Field struct {
 	Components    []int
 	IsAccumulated bool
 	HasComponents bool
-	SubFields     []int
+	Map           []FieldMap
+	SubFields     []Field
+}
+
+type FieldMap struct {
+	Name  string
+	Value int
 }
 
 type Type struct {
@@ -52,11 +58,18 @@ type MesgNum struct {
 }
 
 var PROFILE = Profile{
-	Version:      ProfVersion{},
-	CommonFields: CommonFields{},
-	Messages:     []Message{},
-	Types:        []Type{},
-	MesgNum:      []MesgNum{},
+	Version: ProfVersion{
+		Major: 21,
+		Minor: 141,
+		Patch: 0,
+		Type:  "Release"},
+	CommonFields: CommonFields{
+		PartIndex:    250,
+		Timestamp:    253,
+		MessageIndex: 254},
+	Messages: []Message{},
+	Types:    []Type{},
+	MesgNum:  []MesgNum{},
 }
 
 // Depricate the stuff below, use the js SDK profile as a reference.
