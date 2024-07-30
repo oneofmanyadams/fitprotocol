@@ -67,9 +67,18 @@ var PROFILE = Profile{
 		PartIndex:    250,
 		Timestamp:    253,
 		MessageIndex: 254},
-	Messages: []Message{},
-	Types:    []Type{},
-	MesgNum:  []MesgNum{},
+	Messages: []Message{
+		{Num: 0, Name: "fileId", MessagesKey: "fileIdMesgs",
+			Fields: []Field{
+				{Num:0,
+				Name:"type",
+				Array: false,
+				Scale: 1,
+				Offset:0,
+				Units: ""}
+	}}},
+	Types:   []Type{},
+	MesgNum: []MesgNum{},
 }
 
 // Depricate the stuff below, use the js SDK profile as a reference.
