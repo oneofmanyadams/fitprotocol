@@ -94,13 +94,13 @@ func (s *DefinitionMessage) ParseDataMessage(b []byte) ([]DataPoint, error) {
 	return datas, nil
 }
 
-func (s *DefinitionMessage) MessageNumber() (MsgNum, error) {
-	for _, msg_num := range MESSAGE_NUMBERS {
-		if msg_num.Number == int(s.GlobalMessageNumber) {
+func (s *DefinitionMessage) MessageNumber() (Message, error) {
+	for _, msg_num := range PROFILE.Messages {
+		if msg_num.Num == int(s.GlobalMessageNumber) {
 			return msg_num, nil
 		}
 	}
-	return MsgNum{}, errors.New("NO MATCHING MESSAGE NAME FOR " + strconv.Itoa(int(s.GlobalMessageNumber)))
+	return Message{}, errors.New("NO MATCHING MESSAGE NAME FOR " + strconv.Itoa(int(s.GlobalMessageNumber)))
 }
 
 func (s *DefinitionMessage) MessageName() string {
@@ -123,9 +123,9 @@ type FieldDefinition struct {
 	Bytes    []byte
 }
 
-func (s *FieldDefinition) FieldName(msg_num MsgNum) string {
+func (s *FieldDefinition) FieldName(msg_num Message) string {
 	for _, field := range msg_num.Fields {
-		if field.Number == s.Number {
+		if field.Num == int(s.Number) {
 			return field.Name
 		}
 	}
