@@ -10,7 +10,9 @@ import (
 // Third func for reading timestamp messages?
 
 func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
+	fmt.Println("-------------------------------------------------")
 	fmt.Println("----------Definition Message---------------------")
+	fmt.Println("-------------------------------------------------")
 	// Read Message Type
 	msg_header_bytes, _ := fit_reader.ReadByte()
 	fmt.Println("")
@@ -43,6 +45,8 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	}
 	// display field definition data
 	for _, field := range def_msg.FieldDefinitions {
+		// skipping this temporarily to reduce noise
+		continue
 		data_type, err := BASE_TYPES.GetBaseType(field.BaseType)
 		/*
 			No matching type found
@@ -68,6 +72,8 @@ func ReadDefMsg(fit_reader *FitReader) DefinitionMessage {
 	// display dev definition data
 	if def_msg.DevFlag {
 		for _, dev_field := range def_msg.DevFieldDefinitions {
+			// skipping this temporarily to reduce noise
+			continue
 			fmt.Printf("%+v\n", dev_field)
 		}
 	}
