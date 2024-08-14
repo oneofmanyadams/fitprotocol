@@ -60,7 +60,7 @@ func (s *DataType) ConvertData(b []byte, arch uint8) (string, error) {
 			return fmt.Sprint(binary.BigEndian.Uint32(b)), nil
 		}
 	case "string":
-		return string(b), nil
+		return fmt.Sprintf("%s", b), nil //string(b), nil
 	case "float32":
 		var f float32
 		if arch == 0 {
