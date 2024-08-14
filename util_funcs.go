@@ -96,7 +96,7 @@ func ReadDataMsg(fit_reader *FitReader, def_msg DefinitionMessage) {
 }
 
 func ReadTimestampMsg(fit_reader *FitReader, def_msg DefinitionMessage) {
-	fmt.Println("-------------Data Message------------------------")
+	fmt.Println("-------------Data Message-(timestamp)------------")
 	// Read data message header
 	fmt.Println("")
 	fmt.Println("--Message Header:")
